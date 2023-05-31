@@ -4,8 +4,15 @@
     "description": "## TaskEase is a simple and intuitive todo application built using Node.js, Express, and MongoDB. It provides users with a convenient way to manage their tasks and stay organized. With TaskEasy, you can easily create, update, and delete tasks, and prioritize your to-do items. The application ensures that your tasks are securely stored and readily accessible whenever you need them. TaskEase offers a user-friendly interface and efficient task management capabilities.",
     "main": "login.html",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon app.js"
     },
     "author": "Pratham Patel",
-    "license": "MIT"
+    "license": "MIT",
+    "dependencies": {
+        "express": "^4.18.2"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.22"
+    }
 }
