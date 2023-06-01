@@ -14,3 +14,8 @@ app.get('/', (req, res) => {
     const filePath = path.resolve(__dirname, 'public/login.html');
     res.sendFile(filePath);
 })
+
+app.post('/dashboard', (req, res) => {
+    const dashboard = path.join(__dirname, 'public/dashboard.html');
+    res.sendFile(dashboard);
+})
