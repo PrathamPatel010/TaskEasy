@@ -6,3 +6,9 @@
     resize: none;
     box-decoration-break: none;
 }
+
+.content {
+    border-radius: 5px;
+    border: 1px solid black;
+    max-width: 50%;
+}

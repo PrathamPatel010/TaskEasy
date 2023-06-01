@@ -1,20 +1,70 @@
-const taskForm = document.getElementById('task-main');
+window.addEventListener('load', () => {
+    const form = document.querySelector('#task-main');
+    const taskName = document.querySelector('#task-name');
+    const description = document.querySelector('#task-description');
+    const li_ele = document.querySelector('.tasks');
+    console.log(form);
 
-taskForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const taskName = document.getElementById('task-name').value;
-    const taskDesc = document.getElementById('task-description').value;
-    const task = {
-        title: taskName,
-        desc: taskDesc,
-    };
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const task = taskName.value;
+        const desc = description.value;
 
-    const taskContainer = document.querySelector('.tasks');
-    taskContainer.innerHTML += `
-    <ul class="task my-2">
-        <li>${task.title} - ${task.desc} 
-        <button class="btn btn-light text-center">Delete</button>
-        </li>
-    </ul>
-    `;
+        const task_el = document.createElement('div');
+        task_el.classList.add('task');
+        task_el.classList.add('my-3');
+
+        const task_content_el = document.createElement('div');
+        task_content_el.classList.add('content');
+        task_content_el.classList.add('center');
+
+        task_content_el.innerText = task + ' - ' + desc;
+        task_el.appendChild(task_content_el);
+        li_ele.appendChild(task_el);
+
+        taskName.value = '';
+        description.value = '';
+        const task_delete_el = document.createElement('button');
+        task_delete_el.classList.add('mx-2');
+        task_delete_el.classList.add('btn-danger');
+        task_delete_el.textContent = 'Delete';
+        task_content_el.appendChild(task_delete_el);
+        centerTaskDiv();
+
+        function centerTaskDiv() {
+            const taskDivs = document.querySelectorAll('.task');
+            taskDivs.forEach((taskDiv) => {
+                taskDiv.style.display = 'flex';
+                taskDiv.style.justifyContent = 'center';
+                taskDiv.style.alignItems = 'center';
+            });
+        }
+
+        task_delete_el.addEventListener('click', () => {
+            li_ele.removeChild(task_el);
+        })
+    })
 })
+
+
+// Backup code:
+// const taskForm = document.getElementById('task-main');
+
+// taskForm.addEventListener('submit', (event) => {
+//     event.preventDefault();
+//     const taskName = document.getElementById('task-name').value;
+//     const taskDesc = document.getElementById('task-description').value;
+//     const task = {
+//         title: taskName,
+//         desc: taskDesc,
+//     };
+
+//     const taskContainer = document.querySelector('.tasks');
+//     taskContainer.innerHTML += `
+//     <ul class="task my-2">
+//         <li>${task.title} - ${task.desc} 
+//         <button class="btn btn-light text-center">Delete</button>
+//         </li>
+//     </ul>
+//     `;
+// })
