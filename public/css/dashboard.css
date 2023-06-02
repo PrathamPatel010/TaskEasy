@@ -1,14 +1,17 @@
 .input-field {
+    height: fit-content;
     width: 100%;
-    max-width: 45rem;
-    margin: 0 auto;
+    margin: auto;
     display: block;
-    resize: none;
-    box-decoration-break: none;
 }
 
 .content {
     border-radius: 5px;
     border: 1px solid black;
     max-width: 50%;
+}
+
+.btn-delete {
+    background-color: black;
+    color: white;
 }
