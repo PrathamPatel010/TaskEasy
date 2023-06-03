@@ -4,7 +4,7 @@ window.addEventListener('load', () => {
     const li_ele = document.querySelector('.tasks');
     console.log(form);
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async(e) => {
         e.preventDefault();
         const task = taskName.value;
 
@@ -20,6 +20,26 @@ window.addEventListener('load', () => {
         li_ele.appendChild(task_el);
         taskName.value = '';
 
+        await axios.post('/tasks', { taskname: task })
+            .then(response => {
+                console.log(response.data);
+                // Perform any necessary UI updates or notifications
+
+                // Make axios GET request to fetch the updated tasks from the database
+                await axios.get('/tasks', { task })
+                    .then(response => {
+                        console.log(response.data);
+                        // Perform any necessary UI updates with the fetched tasks
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        // Handle the error scenario
+                    });
+            })
+            .catch(error => {
+                console.error(error);
+                // Handle the error scenario
+            });
         const task_delete_el = document.createElement('button');
         task_delete_el.classList.add('mx-2', 'btn-danger', 'btn-delete');
         task_delete_el.textContent = 'Delete';
@@ -29,26 +49,3 @@ window.addEventListener('load', () => {
         })
     })
 })
-
-
-// Backup code:
-// const taskForm = document.getElementById('task-main');
-
-// taskForm.addEventListener('submit', (event) => {
-//     event.preventDefault();
-//     const taskName = document.getElementById('task-name').value;
-//     const taskDesc = document.getElementById('task-description').value;
-//     const task = {
-//         title: taskName,
-//         desc: taskDesc,
-//     };
-
-//     const taskContainer = document.querySelector('.tasks');
-//     taskContainer.innerHTML += `
-//     <ul class="task my-2">
-//         <li>${task.title} - ${task.desc} 
-//         <button class="btn btn-light text-center">Delete</button>
-//         </li>
-//     </ul>
-//     `;
-// })
