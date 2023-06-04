@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const { log } = require('console');
 
 // initialize app
 const app = express();
@@ -34,4 +35,12 @@ app.post('/register', (req, res) => {
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
     res.json({ "Username": username, "password": password });
+})
+
+app.post('/tasks', (req, res) => {
+    // database storing
+    // ---
+    const resToBeSend = (req.body);
+    console.log(resToBeSend);
+    res.send(req.body);
 })

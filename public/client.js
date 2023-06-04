@@ -8,44 +8,30 @@ window.addEventListener('load', () => {
         e.preventDefault();
         const task = taskName.value;
 
-        const task_el = document.createElement('div');
-        task_el.classList.add('task', 'my-3');
-
-        const task_content_el = document.createElement('div');
-        task_content_el.classList.add('content', 'center');
-        task_content_el.style.margin = 'auto';
-
-        task_content_el.innerText = task;
-        task_el.appendChild(task_content_el);
-        li_ele.appendChild(task_el);
-        taskName.value = '';
-
-        await axios.post('/tasks', { taskname: task })
+        axios.post('/tasks', ({ name: task }))
             .then(response => {
-                console.log(response.data);
-                // Perform any necessary UI updates or notifications
+                const task_el = document.createElement('div');
+                task_el.classList.add('task', 'my-3');
 
-                // Make axios GET request to fetch the updated tasks from the database
-                await axios.get('/tasks', { task })
-                    .then(response => {
-                        console.log(response.data);
-                        // Perform any necessary UI updates with the fetched tasks
-                    })
-                    .catch(error => {
-                        console.error(error);
-                        // Handle the error scenario
-                    });
+                const task_content_el = document.createElement('div');
+                task_content_el.classList.add('content', 'center');
+                task_content_el.style.margin = 'auto';
+
+                task_content_el.innerText = task;
+                task_el.appendChild(task_content_el);
+                li_ele.appendChild(task_el);
+                taskName.value = '';
+
+                const task_delete_el = document.createElement('button');
+                task_delete_el.classList.add('mx-2', 'btn-danger', 'btn-delete');
+                task_delete_el.textContent = 'Delete';
+                task_content_el.appendChild(task_delete_el);
+                task_delete_el.addEventListener('click', () => {
+                    li_ele.removeChild(task_el);
+                })
             })
             .catch(error => {
                 console.error(error);
-                // Handle the error scenario
             });
-        const task_delete_el = document.createElement('button');
-        task_delete_el.classList.add('mx-2', 'btn-danger', 'btn-delete');
-        task_delete_el.textContent = 'Delete';
-        task_content_el.appendChild(task_delete_el);
-        task_delete_el.addEventListener('click', () => {
-            li_ele.removeChild(task_el);
-        })
     })
 })
