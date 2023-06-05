@@ -3,7 +3,6 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
-const { log, error } = require('console');
 const { User } = require('./auth/models');
 const bcrypt = require('bcrypt');
 const cors = require('cors');
@@ -68,9 +67,29 @@ app.post('/register', (req, res) => {
     })
 })
 
-app.post('/login', (req, res) => {
-    const { email, password } = req.body;
-    res.json({ "E-mail": email, "password": password });
+app.post('/login', async(req, res) => {
+    const { mail, pwd } = req.body;
+    User.findOne({ email: mail })
+        .then((userInfo) => {
+            // console.log(userInfo);
+            const passOk = bcrypt.compareSync(pwd, userInfo.password);
+            if (passOk) {
+                jwt.sign({ id: userInfo._id, mail: userInfo.email }, secret, (err, token) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        res.cookie('token', token).json({ id: userInfo._id, email: userInfo.email });
+                    }
+                })
+            } else {
+                console.log(`Wrong E-mail OR password`);
+                res.json({ flag: 401 });
+            }
+        })
+        .catch((err) => {
+            console.log(`No email found`);
+            res.json({ flag: 404 });
+        })
 })
 
 app.post('/tasks', (req, res) => {
