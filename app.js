@@ -3,11 +3,13 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
-const { User } = require('./auth/models');
+const { User } = require('./database/models')
 const bcrypt = require('bcrypt');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const secret = 'secret123';
+const { authenticateUser } = require('./middleware/authenticateUser');
+const { Todo } = require('./database/todos');
 
 // initialize app
 const app = express();
@@ -46,7 +48,7 @@ app.get('/user', (req, res) => {
         })
 })
 
-app.get('/dashboard', (req, res) => {
+app.get('/dashboard', authenticateUser, (req, res) => {
     res.sendFile(__dirname + '/public/dashboard.html');
 })
 
@@ -55,7 +57,6 @@ app.post('/register', (req, res) => {
     const hashedPassword = bcrypt.hashSync(pwd, 10);
     const user = new User({ email: mail, password: hashedPassword });
     user.save().then(userInfo => {
-        console.log(userInfo);
         jwt.sign({ id: userInfo._id, email: userInfo.email }, secret, (err, token) => {
             if (err) {
                 console.log(err);
@@ -92,10 +93,36 @@ app.post('/login', async(req, res) => {
         })
 })
 
-app.post('/tasks', (req, res) => {
-    // database storing
-    // ---
-    const resToBeSend = (req.body);
-    console.log(resToBeSend);
-    res.send(req.body);
+app.post('/logout', (req, res) => {
+    res.cookie('token', '').send();
 })
+app.post('/todos', (req, res) => {
+    const payload = jwt.verify(req.cookies.token, secret);
+    const { task } = req.body;
+    const newTodo = new Todo({ text: task, done: false, user: payload.id })
+    newTodo.save().then((response) => {
+        res.json(response);
+    })
+})
+
+app.get('/todos', async(req, res) => {
+    try {
+        const payload = jwt.verify(req.cookies.token, secret);
+        const todos = await Todo.find({ user: new mongoose.Types.ObjectId(payload.id) });
+        res.json(todos);
+    } catch (err) {
+        console.log(err);
+    }
+})
+
+app.delete('/todos', async(req, res) => {
+    try {
+        const payload = jwt.verify(req.cookies.token, secret);
+        const taskText = req.query.text;
+        await Todo.deleteOne({ user: new mongoose.Types.ObjectId(payload.id), text: taskText });
+        res.sendStatus(200);
+    } catch (err) {
+        console.log(err);
+        res.sendStatus(500);
+    }
+});

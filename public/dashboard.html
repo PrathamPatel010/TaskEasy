@@ -12,18 +12,19 @@
 
 <body>
     <section>
-        <form action="/task" id="task-main" class="task-form my-5" method="POST">
+        <form action="" id="form-task" class="task-form my-5" method="POST">
             <h4 class="text-center" id="pageHeading">TaskEase</h4>
             <div class="form-control">
                 <div class="col-12 my-2 text-center">
-                    <input type="text" name="name" id="task-name" class="task-input" placeholder="main-task" style="width: 50%;" required/>
+                    <input id="task-name" type="text" name="name" class="task-input" placeholder="main-task" style="width: 50%;" required/>
                 </div>
                 <div class="col-12 my-3 text-center">
-                    <button type="submit " class="btn submit-btn btn-success ">Add Task</button>
+                    <button id="btn-submit" type="submit " class="btn btn-success ">Add Task</button>
                 </div>
             </div>
-            <div class="form-alert ">
-
+            <div class="form-alert">
+                <ul class="" id="task-list">
+                </ul>
             </div>
         </form>
     </section>
