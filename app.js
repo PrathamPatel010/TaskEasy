@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const secret = 'secret123';
-
+const { authenticateUser } = require('./middleware/authenticateUser');
 // initialize app
 const app = express();
 
@@ -46,7 +46,7 @@ app.get('/user', (req, res) => {
         })
 })
 
-app.get('/dashboard', (req, res) => {
+app.get('/dashboard', authenticateUser, (req, res) => {
     res.sendFile(__dirname + '/public/dashboard.html');
 })
 
