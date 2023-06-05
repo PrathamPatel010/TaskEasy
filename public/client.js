@@ -1,13 +1,24 @@
-window.addEventListener('load', () => {
+window.addEventListener('load', async() => {
     const form = document.querySelector('#task-main');
     const taskName = document.querySelector('#task-name');
     const li_ele = document.querySelector('.tasks');
-    console.log(form);
-
+    const heading = document.getElementById('pageHeading');
+    await axios.get('/user', { withCredentials: true })
+        .then((response) => {
+            const acknowledge = document.createElement('div');
+            const emailInfo = response.data.email;
+            if (!emailInfo) {
+                acknowledge.innerHTML = `<h6>Not Logged in</h6>`;
+                heading.appendChild(acknowledge)
+            } else {
+                acknowledge.innerHTML = `
+            <h6>Logged in as ${response.data.email}</h6>`;
+                heading.appendChild(acknowledge);
+            }
+        })
     form.addEventListener('submit', async(e) => {
         e.preventDefault();
         const task = taskName.value;
-
         axios.post('/tasks', ({ name: task }))
             .then(response => {
                 const task_el = document.createElement('div');
