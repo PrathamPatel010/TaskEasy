@@ -1,11 +1,14 @@
 window.addEventListener('load', async() => {
+    let logoutBtn
+    let acknowledge
     const form = document.querySelector('#task-main');
     const taskName = document.querySelector('#task-name');
     const li_ele = document.querySelector('.tasks');
     const heading = document.getElementById('pageHeading');
     await axios.get('/user', { withCredentials: true })
         .then((response) => {
-            const acknowledge = document.createElement('div');
+            acknowledge = document.createElement('div');
+            acknowledge.classList.add('my-3');
             const emailInfo = response.data.email;
             if (!emailInfo) {
                 acknowledge.innerHTML = `<h6>Not Logged in</h6>`;
@@ -14,8 +17,26 @@ window.addEventListener('load', async() => {
                 acknowledge.innerHTML = `
             <h6>Logged in as ${response.data.email}</h6>`;
                 heading.appendChild(acknowledge);
+                logoutBtn = document.createElement('btn');
+                logoutBtn.innerText = 'Log Out'
+                logoutBtn.classList.add('btn', 'btn-success', 'text-center', 'my-2');
+                acknowledge.appendChild(logoutBtn);
             }
         })
+        .catch((err) => {
+            console.log(err);
+        });
+
+    logoutBtn.addEventListener('click', async() => {
+        await axios.post('/logout', {}, { withCredentials: true })
+            .then(() => {
+                acknowledge.innerHTML = `<h6>Not Logged in</h6>`;
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+    })
+
     form.addEventListener('submit', async(e) => {
         e.preventDefault();
         const task = taskName.value;

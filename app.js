@@ -92,6 +92,10 @@ app.post('/login', async(req, res) => {
         })
 })
 
+app.post('/logout', (req, res) => {
+    res.cookie('token', '').send();
+
+})
 app.post('/tasks', (req, res) => {
     // database storing
     // ---
