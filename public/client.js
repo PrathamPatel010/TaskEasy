@@ -18,7 +18,7 @@ window.addEventListener('load', async() => {
                 heading.appendChild(acknowledge);
                 logoutBtn = document.createElement('btn');
                 logoutBtn.innerText = 'Log Out';
-                logoutBtn.classList.add('btn', 'btn-success', 'text-center', 'my-2');
+                logoutBtn.classList.add('btn', 'btn-danger', 'text-center', 'my-2');
                 acknowledge.appendChild(logoutBtn);
             }
         })
