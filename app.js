@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -13,13 +14,28 @@ const { Todo } = require('./database/todos');
 
 // initialize app
 const app = express();
+const PORT = process.env.PORT || 5000;
 
 // database connection
-mongoose.connect('mongodb://127.0.0.1:27017/auth')
-const db = mongoose.connection;
-db.on('error', (err) => {
-    console.log(err);
-});
+mongoose.set('strictQuery', false);
+const connectDB = async() => {
+    try {
+        const conn = await mongoose.connect(process.env.MONGO_URI);
+        console.log(`MongoDB connected: ${conn.connection.host}`);
+    } catch (err) {
+        console.log(err);
+        process.exit(1);
+    }
+}
+connectDB()
+    .then(() => {
+        app.listen(PORT, () => {
+            console.log(`Server is listening on port ${PORT}`);
+        })
+    })
+    .catch((err) => {
+        console.log(err);
+    })
 
 // middlewares
 app.use(express.static('./public'))
@@ -30,9 +46,6 @@ app.use(cors({
     credentials: true,
 }))
 
-app.listen(5000, () => {
-    console.log(`Server is listening on port 5000`);
-})
 
 // Routes
 app.get('/', (req, res) => {
