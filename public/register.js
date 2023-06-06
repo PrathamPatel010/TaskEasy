@@ -7,9 +7,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = { mail, pwd };
         await axios.post('/register', data, { withCredentials: true })
             .then((response) => {
-                document.getElementById('email').value = '';
-                document.getElementById('password').value = '';
-                window.location.href = "/dashboard";
+                const flag = response.data.flag;
+                if (flag == 1) {
+                    const acknowledge = document.createElement('div');
+                    acknowledge.classList.add('my-3', 'text-center');
+                    acknowledge.innerHTML = `
+                    <h6>Account already exist</h6>
+                    <h6>Wait!! you are being redirected to login!</h6>`
+                    registerForm.appendChild(acknowledge);
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 3000);
+                } else {
+                    document.getElementById('email').value = '';
+                    document.getElementById('password').value = '';
+                    window.location.href = "/dashboard";
+                }
             })
             .catch(err => {
                 console.log(err);
