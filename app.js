@@ -65,20 +65,29 @@ app.get('/dashboard', authenticateUser, (req, res) => {
     res.sendFile(__dirname + '/public/dashboard.html');
 })
 
-app.post('/register', (req, res) => {
+app.post('/register', async(req, res) => {
     const { mail, pwd } = req.body;
-    const hashedPassword = bcrypt.hashSync(pwd, 10);
-    const user = new User({ email: mail, password: hashedPassword });
-    user.save().then(userInfo => {
-        jwt.sign({ id: userInfo._id, email: userInfo.email }, secret, (err, token) => {
-            if (err) {
-                console.log(err);
-                res.sendStatus(500);
-            } else {
-                res.cookie('token', token).json({ id: userInfo._id, email: userInfo.email });
-            }
-        })
-    })
+    try {
+        const check = await User.findOne({ email: mail })
+        if (check) {
+            res.json({ flag: 1 });
+        } else {
+            const hashedPassword = bcrypt.hashSync(pwd, 10);
+            const user = new User({ email: mail, password: hashedPassword });
+            user.save().then(userInfo => {
+                jwt.sign({ id: userInfo._id, email: userInfo.email }, secret, (err, token) => {
+                    if (err) {
+                        console.log(err);
+                        res.sendStatus(500);
+                    } else {
+                        res.cookie('token', token).json({ id: userInfo._id, email: userInfo.email });
+                    }
+                })
+            })
+        }
+    } catch (err) {
+        console.log(err);
+    }
 })
 
 app.post('/login', async(req, res) => {

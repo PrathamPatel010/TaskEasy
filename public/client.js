@@ -18,7 +18,7 @@ window.addEventListener('load', async() => {
                 heading.appendChild(acknowledge);
                 logoutBtn = document.createElement('btn');
                 logoutBtn.innerText = 'Log Out';
-                logoutBtn.classList.add('btn', 'btn-success', 'text-center', 'my-2');
+                logoutBtn.classList.add('btn', 'btn-danger', 'text-center', 'my-2');
                 acknowledge.appendChild(logoutBtn);
             }
         })
@@ -51,21 +51,13 @@ window.addEventListener('load', async() => {
         .then((response) => {
             response.data.forEach((task) => {
                 const taskItem = document.createElement('li');
-                taskItem.style.listStyle = 'none';
+                taskItem.style.listStyle = 'disc';
                 taskItem.classList.add('my-3');
                 taskItem.innerHTML = `
-            <input type="checkbox" class="task-checkbox">
             <label class="task-label" style="display:inline;">${task.text}</label>
             <button class="btn-delete">Delete</button>
           `;
                 taskList.appendChild(taskItem);
-            });
-
-            taskList.addEventListener('change', (e) => {
-                if (e.target.classList.contains('task-checkbox')) {
-                    const taskLabel = e.target.nextElementSibling;
-                    taskLabel.style.textDecoration = e.target.checked ? 'line-through' : 'none';
-                }
             });
         })
         .catch((err) => {
@@ -82,10 +74,9 @@ window.addEventListener('load', async() => {
             .post('/todos', todo, { withCredentials: true })
             .then((response) => {
                 const taskItem = document.createElement('li');
-                taskItem.style.listStyle = 'none';
+                taskItem.style.listStyle = 'disc';
                 taskItem.classList.add('my-3');
                 taskItem.innerHTML = `
-            <input type="checkbox" class="task-checkbox">
             <label class="task-label" style="display:inline;">${response.data.text}</label>
             <button class="btn-delete">Delete</button>
           `;
