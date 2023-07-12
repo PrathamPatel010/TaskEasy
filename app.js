@@ -8,7 +8,7 @@ const { User } = require('./database/models')
 const bcrypt = require('bcrypt');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
-const secret = 'secret123';
+const secret = process.env.secret;
 const { authenticateUser } = require('./middleware/authenticateUser');
 const { Todo } = require('./database/todos');
 
