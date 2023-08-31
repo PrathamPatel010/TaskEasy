@@ -1,10 +1,12 @@
 import './App.css'
+// import Login from './Components/Login'
+import Register from './Components/Register'
 
 function App() {
-
   return (
     <>
-      <h1>TaskEase Frontend</h1>
+      {/* <Login/> */}
+      <Register/>
     </>
   )
 }
