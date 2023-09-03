@@ -2,3 +2,20 @@ body {
     background-color: #30313d;
     color: #ddd;
 }
+
+
+/* Styles for Login.jsx */
+
+.form-login,
+.form-register {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-login input,
+.form-register input {
+    width: 70%;
+    max-width: 100%;
+}

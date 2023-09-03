@@ -1,11 +1,16 @@
-import './App.css'
+import './App.css';
+import {BrowserRouter as Router,Route,Routes} from 'react-router-dom';
+import Login from './Components/Login';
+import Register from './Components/Register';
 
 function App() {
-
   return (
-    <>
-      <h1>TaskEase Frontend</h1>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login/>} />
+        <Route path="/register" element={<Register/>} />
+      </Routes>
+    </Router>
   )
 }
 
