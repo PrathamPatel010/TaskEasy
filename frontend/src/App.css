@@ -19,3 +19,18 @@ body {
     width: 70%;
     max-width: 100%;
 }
+
+
+/* Styles for MainPage.jsx */
+
+.todo-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.todo-desc {
+    border: solid 1px black;
+    border-radius: 5px;
+    width: 50%;
+}

@@ -6,8 +6,11 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const { connectDb } = require('./database/db');
 const { User } = require('./database/user');
+const { Todo } = require('./database/todo');
 const jwt = require('jsonwebtoken');
 const secret = process.env.jwtsecret;
+const frontend_url = process.env.frontend_url;
+const cookieParser = require('cookie-parser');
 
 // app initialization
 const app = express();
@@ -26,7 +29,13 @@ getDbConnection();
 // middlewares
 app.use(express.json({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cookieParser());
+const corsOption = {
+    origin: frontend_url,
+    credentials: true,
+};
+app.use(cors(corsOption));
+
 
 // home route
 app.get('/', (req, res) => {
@@ -51,7 +60,7 @@ app.post('/api/register', async(req, res) => {
             if (err) {
                 console.log(err.message);
             } else {
-                res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'none' }).json({ status: 200, message: 'Success!!' });
+                res.cookie('token', token, { httpOnly: false, secure: true, sameSite: 'none' }).json({ status: 200, message: 'Success!!' });
             }
         })
     } catch (err) {
@@ -81,13 +90,22 @@ app.post('/api/login', async(req, res) => {
 
         // case: password matches username
         jwt.sign({ id: user._id, username }, secret, (err, token) => {
-            if (err) {
-                console.log(err.message);
+            if (token) {
+                res.cookie('token', token, { httpOnly: false, secure: true, sameSite: 'none' }).json({ status: 200, message: 'Success!!' });
             } else {
-                res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'none' }).json({ status: 200, message: 'Success!!' });
+                console.log(err.message);
             }
-        })
+        });
     } catch (err) {
         console.log(err.message);
     }
 })
+
+// Route for creating a todo
+app.post('/api/addTodo', async(req, res) => {
+    const payload = jwt.verify(req.cookies.token, secret);
+    const { description } = req.body;
+    const newTodo = await Todo.create({ description: description, done: false, user: payload.id });
+    console.log(newTodo);
+    res.json(newTodo);
+});
