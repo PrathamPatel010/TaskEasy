@@ -6,6 +6,8 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const { connectDb } = require('./database/db');
 const { User } = require('./database/user');
+const jwt = require('jsonwebtoken');
+const secret = process.env.jwtsecret;
 
 // app initialization
 const app = express();
@@ -32,7 +34,7 @@ app.get('/', (req, res) => {
 });
 
 // register the user
-app.post('/register', async(req, res) => {
+app.post('/api/register', async(req, res) => {
     try {
         const { username, password } = req.body;
 
@@ -44,15 +46,21 @@ app.post('/register', async(req, res) => {
 
         // if not, then register the user
         const hashedPassword = await bcrypt.hash(password, 10);
-        await User.create({ username, password: hashedPassword });
-        res.json({ status: 200, message: 'Success!!' });
+        const user = await User.create({ username, password: hashedPassword });
+        jwt.sign({ id: user._id, username }, secret, (err, token) => {
+            if (err) {
+                console.log(err.message);
+            } else {
+                res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'none' }).json({ status: 200, message: 'Success!!' });
+            }
+        })
     } catch (err) {
         console.log(err.message);
     }
 });
 
 // login route
-app.post('/login', async(req, res) => {
+app.post('/api/login', async(req, res) => {
     try {
         const { username, password } = req.body;
 
@@ -72,7 +80,13 @@ app.post('/login', async(req, res) => {
         }
 
         // case: password matches username
-        res.json({ status: 200, message: 'Success!!' });
+        jwt.sign({ id: user._id, username }, secret, (err, token) => {
+            if (err) {
+                console.log(err.message);
+            } else {
+                res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'none' }).json({ status: 200, message: 'Success!!' });
+            }
+        })
     } catch (err) {
         console.log(err.message);
     }

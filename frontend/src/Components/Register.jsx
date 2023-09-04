@@ -15,7 +15,7 @@ const Register = () => {
     const handleRegister = async(e) => {
         e.preventDefault();
         const dataTobeSend = {username,password};
-        const response = await axios.post(`${base_url}/register`,dataTobeSend);
+        const response = await axios.post(`${base_url}/api/register`,dataTobeSend);
         console.log(response.data);
         if(response.data.status===400){
             setAcknowledgment(response.data.message);
@@ -24,6 +24,7 @@ const Register = () => {
         setAcknowledgment(response.data.message);
         setUsername('');
         setPassword('');
+        window.location.href="/MainPage";
     }
 
     return(
