@@ -16,6 +16,7 @@ const Login = () => {
         e.preventDefault();
         const dataTobeSend = {username,password};
         const response = await axios.post(`${base_url}/login`,dataTobeSend);
+        console.log(response.data);
         if(response.data.status===404 || response.data.status===501){
             setAcknowledgment(response.data.message);
             return;
