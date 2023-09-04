@@ -15,7 +15,7 @@ const Login = () => {
     const handleLogin = async(e) => {
         e.preventDefault();
         const dataTobeSend = {username,password};
-        const response = await axios.post(`${base_url}/login`,dataTobeSend);
+        const response = await axios.post(`${base_url}/api/login`,dataTobeSend);
         console.log(response.data);
         if(response.data.status===404 || response.data.status===501){
             setAcknowledgment(response.data.message);
@@ -24,6 +24,7 @@ const Login = () => {
         setAcknowledgment(response.data.message);
         setUsername('');
         setPassword('');
+        window.location.href="/MainPage";
     }
 
     return(
