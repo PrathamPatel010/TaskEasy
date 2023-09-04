@@ -16,6 +16,7 @@ const Register = () => {
         e.preventDefault();
         const dataTobeSend = {username,password};
         const response = await axios.post(`${base_url}/register`,dataTobeSend);
+        console.log(response.data);
         if(response.data.status===400){
             setAcknowledgment(response.data.message);
             return;
