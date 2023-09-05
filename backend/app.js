@@ -11,6 +11,7 @@ const jwt = require('jsonwebtoken');
 const secret = process.env.jwtsecret;
 const frontend_url = process.env.frontend_url;
 const cookieParser = require('cookie-parser');
+const mongoose = require('mongoose');
 
 // app initialization
 const app = express();
@@ -103,9 +104,39 @@ app.post('/api/login', async(req, res) => {
 
 // Route for creating a todo
 app.post('/api/addTodo', async(req, res) => {
-    const payload = jwt.verify(req.cookies.token, secret);
-    const { description } = req.body;
-    const newTodo = await Todo.create({ description: description, done: false, user: payload.id });
-    console.log(newTodo);
-    res.json(newTodo);
+    try {
+        // extracting user id from cookies & todo description from request body
+        const payload = jwt.verify(req.cookies.token, secret);
+        const { description } = req.body;
+
+        // creating a new record
+        const newTodo = await Todo.create({ description: description, done: false, user: payload.id });
+        res.json({ status: 200, todo: newTodo.description, todoStatus: newTodo.done });
+    } catch (err) {
+        console.log(err.message);
+    }
 });
+
+// Route for retrieving todos
+app.get('/api/todos', async(req, res) => {
+    try {
+        const payload = jwt.verify(req.cookies.token, secret);
+        const todos = await Todo.find({ user: new mongoose.Types.ObjectId(payload.id) }).select('_id description done');
+        console.log(todos);
+        res.json(todos);
+    } catch (err) {
+        console.log(err.message);
+    }
+});
+
+app.delete('/api/todo/:id', async(req, res) => {
+    try {
+        const payload = jwt.verify(req.cookies.token, secret);
+        const id = req.params.id;
+        await Todo.deleteOne({ user: new mongoose.Types.ObjectId(payload.id), _id: id });
+        res.json({ status: 200, message: 'Todo deleted' });
+    } catch (err) {
+        res.json({ status: 400, message: 'Some error occured' });
+        console.log(err.message);
+    }
+})
