@@ -122,21 +122,37 @@ app.get('/api/todos', async(req, res) => {
     try {
         const payload = jwt.verify(req.cookies.token, secret);
         const todos = await Todo.find({ user: new mongoose.Types.ObjectId(payload.id) }).select('_id description done');
-        console.log(todos);
         res.json(todos);
     } catch (err) {
         console.log(err.message);
     }
 });
 
+// Route for deleting a specific todo
 app.delete('/api/todo/:id', async(req, res) => {
     try {
-        const payload = jwt.verify(req.cookies.token, secret);
-        const id = req.params.id;
+        const payload = jwt.verify(req.cookies.token, secret); // to get the user id
+        const id = req.params.id; // id of todo
         await Todo.deleteOne({ user: new mongoose.Types.ObjectId(payload.id), _id: id });
         res.json({ status: 200, message: 'Todo deleted' });
     } catch (err) {
         res.json({ status: 400, message: 'Some error occured' });
         console.log(err.message);
     }
-})
+});
+
+// Route for updating a todo
+app.patch('/api/todo/:id', async(req, res) => {
+    try {
+        const payload = jwt.verify(req.cookies.token, secret); // for authorizing user
+        const todoID = req.params.id;
+        const doneStatus = req.body;
+        await Todo.findByIdAndUpdate(
+            todoID, { done: doneStatus.done },
+        );
+        res.json({ status: 200, success: true });
+    } catch (err) {
+        console.log(err.message);
+        res.json(err.message);
+    }
+});

@@ -40,22 +40,15 @@ body {
 
 .todos-div {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50%;
+    flex-direction: column;
+    justify-content: left;
 }
 
 .todo-list {
-    padding-left: 100px;
+    padding-left: 1rem;
     list-style: none;
-    display: flex;
-    flex-direction: column;
 }
 
 .todo {
-    text-align: left;
-    display: flex;
-    flex-direction: row;
-    column-gap: 0.5rem;
     font-size: 1.4rem;
 }
