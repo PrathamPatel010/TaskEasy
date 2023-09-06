@@ -23,6 +23,15 @@ body {
 
 /* Styles for MainPage.jsx */
 
+.userInfo-div {
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 1rem;
+    overflow: auto;
+}
+
 .todo-form {
     display: flex;
     justify-content: center;
@@ -35,6 +44,11 @@ body {
     width: 50%;
 }
 
+.errAck-div {
+    color: rgb(192, 26, 26);
+    font-size: large;
+}
+
 
 /* Styles for Todo-List */
 
@@ -45,8 +59,17 @@ body {
 }
 
 .todo-list {
-    padding-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    column-gap: 1rem;
     list-style: none;
+}
+
+.todo-div {
+    border: grey solid 1px;
+    border-radius: 5px;
+    margin-top: 0.5rem;
+    overflow: auto;
 }
 
 .todo {
