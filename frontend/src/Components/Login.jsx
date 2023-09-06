@@ -15,6 +15,7 @@ const Login = () => {
     const handleLogin = async(e) => {
         e.preventDefault();
         const dataTobeSend = {username,password};
+        setAcknowledgment('Processing... Please wait...');
         const response = await axios.post(`${base_url}/api/login`,dataTobeSend,{withCredentials:true});
         console.log(response.data);
         if(response.data.status===404 || response.data.status===501){
