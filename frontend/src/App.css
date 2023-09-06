@@ -34,3 +34,21 @@ body {
     border-radius: 5px;
     width: 50%;
 }
+
+
+/* Styles for Todo-List */
+
+.todos-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+}
+
+.todo-list {
+    padding-left: 1rem;
+    list-style: none;
+}
+
+.todo {
+    font-size: 1.4rem;
+}
