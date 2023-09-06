@@ -30,6 +30,8 @@ body {
     align-items: center;
     column-gap: 1rem;
     overflow: auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
 }
 
 .todo-form {
@@ -56,6 +58,8 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: left;
+    padding-left: 2rem;
+    padding-right: 2rem;
 }
 
 .todo-list {
@@ -67,11 +71,11 @@ body {
 
 .todo-div {
     border: grey solid 1px;
-    border-radius: 5px;
+    border-radius: 15px;
     margin-top: 0.5rem;
     overflow: auto;
 }
 
 .todo {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
 }
