@@ -97,14 +97,14 @@ const MainPage = () => {
 
     return(
         <>
-            <div className="text-center mt-4 pt-3">
+            <div className="container text-center mt-4 pt-3">
                 <h1>TaskEasy - A Todo App</h1>
             </div>
-            <div className="userInfo-div mt-4">
+            <div className="container userInfo-div mt-4">
                 <h4 className="username-ele">{acknowledgment}</h4>
                 <button className="btn btn-danger" onClick={handleLogout}>Logout</button>
             </div>
-            <div className="big-container">
+            <div className="container big-container">
                 <article className="mt-4 pt-3">
                     <form method="post" className="todo-form" onSubmit={addTodo}>
                         <input type="text" value={description} placeholder="Todo" onChange={(e)=>{setDescription(e.target.value)}} className="todo-desc form-control" />
@@ -114,13 +114,14 @@ const MainPage = () => {
                         <h5>{errMessage}</h5>
                     </div>
                 </article>
+                
                 <div className="container todos-div mt-4">
                     <ul className="todo-list">
                         {todos.slice().reverse().map(todo=>{ 
                             const uniqueKey = uuidv4();
                             return(
-                            <div className="todo-div" key={uniqueKey}>
-                                <li className="todo my-3">
+                            <div className="container todo-div" key={uniqueKey}>
+                                <li className="todo my-2">
                                     <input type="checkbox" value={todo.id} onChange={updateTodo} checked={todo.doneStatus} className="mx-3"/>{todo.todoText}<button onClick={deleteTodo} className="mx-3 btn btn-primary" value={todo.id}>Delete</button>
                                 </li>
                             </div>
