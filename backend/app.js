@@ -15,9 +15,9 @@ const mongoose = require('mongoose');
 
 // app initialization
 const app = express();
-const getDbConnection = () => {
+const getDbConnection = async() => {
     try {
-        connectDb();
+        await connectDb();
         app.listen(PORT, () => {
             console.log(`Server is listening on http://localhost:${PORT}`);
         });
@@ -102,6 +102,15 @@ app.post('/api/login', async(req, res) => {
     }
 })
 
+// Route for logging out
+app.get('/api/logout', (req, res) => {
+    const isAuth = req.cookies.token ? true : false;
+    if (!isAuth) {
+        return res.json({ status: 500, message: 'No cookies found!' });
+    }
+    res.clearCookie('token', { httpOnly: false, secure: true, sameSite: 'none' }).json({ status: 200, message: 'logout successful!' });
+});
+
 // Route for creating a todo
 app.post('/api/addTodo', async(req, res) => {
     try {
@@ -113,7 +122,7 @@ app.post('/api/addTodo', async(req, res) => {
         const newTodo = await Todo.create({ description: description, done: false, user: payload.id });
         res.json({ status: 200, todo: newTodo.description, todoStatus: newTodo.done });
     } catch (err) {
-        console.log(err.message);
+        res.json({ status: 400 });
     }
 });
 
@@ -154,5 +163,21 @@ app.patch('/api/todo/:id', async(req, res) => {
     } catch (err) {
         console.log(err.message);
         res.json(err.message);
+    }
+});
+
+// Route for verifying user sending user info
+app.get('/api/checkAuth', async(req, res) => {
+    try {
+        const isAuth = req.cookies.token ? true : false;
+        if (!isAuth) {
+            return res.json({ message: 'No token found!' });
+        }
+        const payload = jwt.verify(req.cookies.token, secret);
+        const username = payload.username;
+        res.json({ status: 200, message: 'User verified', username });
+    } catch (err) {
+        console.log(err.message);
+        res.json({ status: 400, message: 'User verification failed', errinfo: err.message });
     }
 });
