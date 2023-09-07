@@ -107,7 +107,7 @@ const MainPage = () => {
             <div className="container big-container">
                 <article className="mt-4 pt-3">
                     <form method="post" className="todo-form" onSubmit={addTodo}>
-                        <input type="text" value={description} placeholder="Todo" onChange={(e)=>{setDescription(e.target.value)}} className="todo-desc form-control" />
+                        <input type="text" value={description} placeholder="Todo" onChange={(e)=>{setDescription(e.target.value)}} className="todo-desc form-control" required/>
                         <button type="submit" className="btn btn-success">Add Todo</button>
                     </form>
                     <div className="errAck-div text-center mt-3">
