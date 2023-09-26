@@ -1,8 +1,6 @@
+# v1.0
 # TaskEasy
 I developed this To-Do application after learning Node.js and Express.js Fundamentals to understand how to implement real-time features.
-
-# Link To Application hosted through Render:
-https://taskease-dcde.onrender.com/
 
 ## Note
 Currently I am trying to optimize it using MERN stack. So, don't refer to frontend and backend directory for building your project as currently I am working on it.
