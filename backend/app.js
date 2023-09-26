@@ -19,7 +19,7 @@ const getDbConnection = async() => {
     try {
         await connectDb();
         app.listen(PORT, () => {
-            console.log(`Server is listening on http://localhost:${PORT}`);
+            console.log(`Server is listening on ${PORT}`);
         });
     } catch (err) {
         console.log(err.message);
