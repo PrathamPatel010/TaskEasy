@@ -43,6 +43,12 @@ app.get('/', (req, res) => {
     res.send(`<h1>TaskEasy Backend is up & running</h1>`);
 });
 
+// route for making connection
+app.get('/api/connect', (req, res) => {
+    console.log(`Connection Request hit...`);
+    res.json({ status: 200, message: 'Connection Successfull!!' });
+})
+
 // register the user
 app.post('/api/register', async(req, res) => {
     try {

@@ -10,6 +10,14 @@ body {
 
 /* Styles for Login.jsx */
 
+.loader-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
 .form-login,
 .form-register {
     display: flex;
