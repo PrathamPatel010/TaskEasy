@@ -37,12 +37,13 @@ const Login = () => {
                     const response = await axios.get(`${base_url}/api/connect`);
                     if(response.data.status==200){
                         setIsLoading(false);
+                        clearInterval(pingBackend);
                     }
                 }
             } catch(err){
                 console.log(err.message);
                 if(isLoading){
-                    setTimeout(pingBackend,2000);
+                    setInterval(pingBackend,2000);
                 }
             }
         }
