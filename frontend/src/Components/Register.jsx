@@ -1,8 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useState,useEffect } from "react";
+import { useState} from "react";
 import Footer from "./Footer";
 import axios from 'axios';
-import Spinner from "./Spinner";
 
 const Register = () => {
     const base_url = import.meta.env.VITE_BACKEND_URL;
@@ -11,7 +10,6 @@ const Register = () => {
     const [username,setUsername] = useState('');
     const [password,setPassword] = useState('');
     const [acknowledgment,setAcknowledgment] = useState('');
-    const [isLoading,setIsLoading] = useState(true);
 
     // function to handle login form submission, sending data to backend for processing
     const handleRegister = async(e) => {
@@ -30,34 +28,8 @@ const Register = () => {
         window.location.href="/MainPage";
     }
 
-
-    
-    useEffect(()=>{
-        const pingBackend = async() => {
-            try{
-                if(isLoading){
-                    const response = await axios.get(`${base_url}/api/connect`);
-                    console.log(response.data);
-                    if(response.data.status==200){
-                        setIsLoading(false);
-                    }
-                }
-            } catch(err){
-                console.log(err.message);
-                if(isLoading){
-                    setTimeout(pingBackend,1000);
-                }
-            }
-        }
-        pingBackend();
-    },[isLoading,base_url]);
-
-
     return(
         <>
-        {
-            isLoading ? <Spinner/> : 
-            <>
             <div className="container header d-flex justify-content-center align-items-center mt-4 mb-4">
                 <h1>TaskEasy - A Todo App</h1>
             </div>
@@ -79,10 +51,7 @@ const Register = () => {
                 </article>
             </div>
             <Footer/>
-            </>
-        })
         </>
-    )
-}
+    )}
 
 export default Register;
