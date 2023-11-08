@@ -42,6 +42,7 @@ const Login = () => {
                         <h1 className="my-3">Login</h1>
                         <input value={username} className="form-control mb-3" type="text" placeholder="Username" name="name" autoComplete="on" onChange={(e) => setUsername(e.target.value)} required />
                         <input value={password} className="form-control" type="password" placeholder="password" autoComplete="off" onChange={(e) => setPassword(e.target.value)} required />
+                        <p className={"mb-0 mt-3"}><h6>Test User: Username=Coder, Password=coder</h6></p>
                         {
                             showLoader ? (<SpinnerLoader />) : (<button type="submit" className=" mt-3 btn btn-login btn-primary">Login</button>)
                         }
