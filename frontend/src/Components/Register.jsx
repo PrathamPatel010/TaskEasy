@@ -22,9 +22,11 @@ const Register = () => {
         setShowLoader(false);
         console.log(response.data);
         if (response.data.status === 400) {
+            document.getElementById('ack-div').style.color='red';
             setAcknowledgment(response.data.message);
             return;
         }
+        document.getElementById('ack-div').style.color='green';
         setAcknowledgment(response.data.message);
         setUsername('');
         setPassword('');
@@ -46,7 +48,7 @@ const Register = () => {
                             showLoader ? (<SpinnerLoader />) : (<button type="submit" className=" mt-3 btn btn-login btn-primary">Register</button>)
                         }
                     </form>
-                    <div className="text-center acknowledgment-div my-3">
+                    <div id={'ack-div'} className="text-center acknowledgment-div my-3">
                         <h5>{acknowledgment}</h5>
                     </div>
                     <div className="col-12 text-center mt-5">
