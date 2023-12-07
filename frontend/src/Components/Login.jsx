@@ -22,9 +22,11 @@ const Login = () => {
         setShowLoader(false);
         console.log(response.data);
         if (response.data.status === 404 || response.data.status === 501) {
+            document.getElementById('ack-div').style.color='red';
             setAcknowledgment(response.data.message);
             return;
         }
+        document.getElementById('ack-div').style.color='green';
         setAcknowledgment(response.data.message);
         setUsername('');
         setPassword('');
@@ -42,12 +44,12 @@ const Login = () => {
                         <h1 className="my-3">Login</h1>
                         <input value={username} className="form-control mb-3" type="text" placeholder="Username" name="name" autoComplete="on" onChange={(e) => setUsername(e.target.value)} required />
                         <input value={password} className="form-control" type="password" placeholder="password" autoComplete="off" onChange={(e) => setPassword(e.target.value)} required />
-                        <p className={"mb-0 mt-3"}><h6>Test User: Username=Coder, Password=coder</h6></p>
+                        <p className={"mb-0 mt-3"}><h6>Test User: Username=Coder123, Password=coder</h6></p>
                         {
                             showLoader ? (<SpinnerLoader />) : (<button type="submit" className=" mt-3 btn btn-login btn-primary">Login</button>)
                         }
                     </form>
-                    <div className="text-center acknowledgment-div">
+                    <div id={'ack-div'} className="text-center acknowledgment-div">
                         <h5>{acknowledgment}</h5>
                     </div>
                     <div className="col-12 mt-4 pt-3 text-center">
