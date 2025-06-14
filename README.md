@@ -1,6 +1,5 @@
 ## Note
 I have developed newer version using MERN stack. 
-Here's a link to live application: https://taskeasy010.netlify.app/
 
 If you want to refer to previous version, it is v1.0
 # v1.0
